@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 from enum import Enum
 from datetime import datetime
 import re
@@ -31,3 +31,16 @@ class AbastecimentoCreate(BaseModel):
                 raise ValueError('CPF inválido')
 
         return cpf
+    
+
+class AbastecimentoResponse(BaseModel):
+    id: int
+    id_posto: int
+    data_hora: datetime 
+    tipo_combustivel: TipoCombustivel  
+    preco_por_litro: float
+    volume_abastecido: float
+    cpf_motorista: str
+    dado_improprio: bool
+
+model_config = ConfigDict(from_attributes=True)
