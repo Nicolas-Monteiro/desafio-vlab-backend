@@ -12,4 +12,4 @@ class AbastecimentoModel(Base):
     volume_abastecido = Column(Float, nullable=False)
     cpf_motorista = Column(String(14), nullable=False)
     
-    dado_improprio = Column(Boolean, default=False)
+    dado_improprio = Column(Boolean, default=False, nullable=False)
