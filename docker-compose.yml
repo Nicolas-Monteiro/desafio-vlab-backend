@@ -21,6 +21,23 @@ services:
     volumes:
       - redis_data:/data
 
+  api:
+    build: .
+    container_name: vlab_api
+    restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - cache
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://admin:adminpassword@db:5432/vlab_abastecimentos
+      - REDIS_URL=redis://cache:6379
+    volumes:
+      - .:/app
+    command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
+
+  
 volumes:
   postgres_data:
   redis_data:

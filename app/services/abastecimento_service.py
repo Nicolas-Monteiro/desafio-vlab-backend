@@ -3,7 +3,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.abastecimento import AbastecimentoModel
 from app.schemas.abastecimento import AbastecimentoCreate
 
-# Médias mockadas iniciais caso o cache do Redis esteja vazio
 MEDIAS_PADRAO = {
     "GASOLINA": 5.50,
     "ETANOL": 3.80,
@@ -13,7 +12,7 @@ MEDIAS_PADRAO = {
 class AbastecimentoService:
     @staticmethod
     async def process_ingestion(payload: AbastecimentoCreate, db: AsyncSession) -> dict:
-        redis = aioredis.from_url("redis://localhost:6379", decode_responses=True)
+        redis = aioredis.from_url("redis://cache:6379", decode_responses=True)
         
         try:
             tipo_combustivel = payload.tipo_combustivel.upper()
