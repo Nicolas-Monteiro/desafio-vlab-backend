@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Ambientes Virtuais (Isso salva a sua vida!)
+venv/
+env/
+.venv/
+
+# Arquivos de Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Arquivos de Ambiente (Segurança)
+.env
+.env.*
+
+# Configurações de IDE
+.vscode/
+.idea/
+
+# Arquivos do próprio Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
