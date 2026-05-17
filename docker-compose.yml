@@ -37,6 +37,16 @@ services:
       - .:/app
     command: sh -c "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"
 
+  load_tester:
+    build: .
+    container_name: vlab_load_tester
+    command: python scripts/load_data.py
+    volumes:
+      - .:/app
+    depends_on:
+      - api  
+    environment:
+      - PYTHONUNBUFFERED=1 
   
 volumes:
   postgres_data:
