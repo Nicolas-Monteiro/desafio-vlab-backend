@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+
 from app.routers import abastecimento, motorista
 
 app = FastAPI(
@@ -9,6 +10,7 @@ app = FastAPI(
 
 app.include_router(abastecimento.router)
 app.include_router(motorista.router)
+
 
 @app.get("/health")
 def health_check():

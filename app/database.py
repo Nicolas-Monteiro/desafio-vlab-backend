@@ -1,7 +1,8 @@
 import os
 from typing import AsyncGenerator
+
 from dotenv import load_dotenv
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 load_dotenv()
@@ -16,11 +17,9 @@ ASYNC_DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg:/
 engine = create_async_engine(ASYNC_DATABASE_URL, echo=True)
 
 SessionLocal = sessionmaker(
-    autocommit=False, 
-    autoflush=False, 
-    bind=engine, 
-    class_=AsyncSession
+    autocommit=False, autoflush=False, bind=engine, class_=AsyncSession
 )
+
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with SessionLocal() as session:
@@ -30,5 +29,6 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         except Exception:
             await session.rollback()
             raise
-        
+
+
 Base = declarative_base()

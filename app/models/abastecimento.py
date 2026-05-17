@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
+from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String
+
 from app.database import Base
+
 
 class AbastecimentoModel(Base):
     __tablename__ = "abastecimentos"
@@ -11,5 +13,5 @@ class AbastecimentoModel(Base):
     preco_por_litro = Column(Float, nullable=False)
     volume_abastecido = Column(Float, nullable=False)
     cpf_motorista = Column(String(14), nullable=False)
-    
+
     dado_improprio = Column(Boolean, default=False, nullable=False)
