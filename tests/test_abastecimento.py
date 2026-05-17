@@ -16,7 +16,10 @@ async def test_criar_abastecimento_cpf_invalido_matematicamente(client):
         "volume_abastecido": 40.0,
         "cpf_motorista": "12345678911",
     }
-    response = await client.post("/api/v1/abastecimentos/", json=payload)
+    headers = {"X-API-Key": "vlab-token-secreto-2026"}
+    response = await client.post(
+        "/api/v1/abastecimentos/", json=payload, headers=headers
+    )
 
     assert response.status_code == 422
     assert "CPF inválido" in response.text
@@ -32,7 +35,10 @@ async def test_criar_abastecimento_cpf_sequencia_repetida(client):
         "volume_abastecido": 20.0,
         "cpf_motorista": "11111111111",
     }
-    response = await client.post("/api/v1/abastecimentos/", json=payload)
+    headers = {"X-API-Key": "vlab-token-secreto-2026"}
+    response = await client.post(
+        "/api/v1/abastecimentos/", json=payload, headers=headers
+    )
 
     assert response.status_code == 422
     assert "CPF inválido" in response.text
@@ -48,7 +54,10 @@ async def test_criar_abastecimento_valores_negativos(client):
         "volume_abastecido": 0.0,
         "cpf_motorista": CPF_VALIDO,
     }
-    response = await client.post("/api/v1/abastecimentos/", json=payload)
+    headers = {"X-API-Key": "vlab-token-secreto-2026"}
+    response = await client.post(
+        "/api/v1/abastecimentos/", json=payload, headers=headers
+    )
 
     assert response.status_code == 422
 
@@ -75,3 +84,19 @@ def test_schema_rejeita_cpf_com_tamanho_errado():
             volume_abastecido=10.0,
             cpf_motorista="123456",
         )
+
+
+@pytest.mark.asyncio
+async def test_criar_abastecimento_sem_token_falha(client):
+    payload = {
+        "id_posto": 1,
+        "data_hora": "2026-05-16T22:00:00",
+        "tipo_combustivel": "GASOLINA",
+        "preco_por_litro": 5.89,
+        "volume_abastecido": 40.0,
+        "cpf_motorista": "12345678909",
+    }
+
+    response = await client.post("/api/v1/abastecimentos/", json=payload)
+
+    assert response.status_code == 401

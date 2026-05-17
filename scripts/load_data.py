@@ -1,8 +1,14 @@
+import os
 import random
+import sys
 import time
 
 import httpx
 from faker import Faker
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+from app.security import SECRET_API_KEY
 
 fake = Faker("pt_BR")
 
@@ -36,13 +42,15 @@ def gerar_dados_abastecimento():
     }
 
 
-def disparar_carga(total_requisicoes: int):
+def disparar_teste(total_requisicoes: int):
     print(f"Iniciando teste de estresse: Enviando {total_requisicoes} requisições")
 
     sucessos = 0
     erros = 0
 
-    with httpx.Client() as client:
+    headers = {"X-API-Key": SECRET_API_KEY}
+
+    with httpx.Client(follow_redirects=True, headers=headers) as client:
         for i in range(total_requisicoes):
             payload = gerar_dados_abastecimento()
             try:
@@ -63,7 +71,7 @@ if __name__ == "__main__":
 
     esperar_carregamento_api()
     while True:
-        disparar_carga(total_requisicoes=50)
+        disparar_teste(total_requisicoes=50)
 
         print("Aguardando 30 segundos para a próxima")
         time.sleep(30)
